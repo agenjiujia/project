@@ -52,9 +52,8 @@ export default {
         // 让异步代码看起来更像是同步代码
         async subdata(){
           const res=await this.$http.post('login',this.formdata)
-          console.log(res)
+          // console.log(res)
           const {data,meta:{msg,status}}=res.data
-          
           if (status===200){
             localStorage.setItem('token',data.token)
             this.$router.push({name:'home'})
