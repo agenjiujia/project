@@ -14,7 +14,7 @@
             </el-col>
             <el-col :span="2">
                 <div class="grid-content bg-purple">
-                    <a href="#" class='middle-a'>退出</a>
+                    <a href="#" class='middle-a' @click.prevent='clearitem'>退出</a>
                 </div>
             </el-col>
         </el-row>
@@ -62,14 +62,27 @@
                 </el-submenu>
             </el-menu>
         </el-aside>
-        <el-main class='main'>Main</el-main>
+        <el-main class='main'>
+            <router-view></router-view>
+        </el-main>
     </el-container>
 </el-container>
 </template>
 
 <script>
 export default {
-
+    beforeCreate() {
+        var token = localStorage.getItem('token')
+        if (!token) {
+            this.$router.push('/login')
+        }
+    },
+    methods: {
+        clearitem() {
+            localStorage.clear();
+            this.$router.push('/login')
+        }
+    }
 }
 </script>
 
