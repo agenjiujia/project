@@ -93,24 +93,24 @@
         </div>
     </el-dialog>
     <!-- 分配权限 -->
-   <el-dialog title="分配角色" :visible.sync="dialogFormVisibleRol">
-      <el-form>
-        <el-form-item label="用户名" :label-width="formLabelWidth">
-          <el-input v-model="currUserName" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="角色" :label-width="formLabelWidth">
-          <el-select v-model="currUserRid" placeholder="">
-            <el-option label="请选择" :value='-1'></el-option>
-            <el-option :label="item.roleName" :value='item.id' v-for="(item,index) in roles" :key='index'></el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisibleRol = false">取 消</el-button>
-        <el-button type="primary" @click="rolEdit()">确 定</el-button>
-      </div>
+    <el-dialog title="分配角色" :visible.sync="dialogFormVisibleRol">
+        <el-form>
+            <el-form-item label="用户名" :label-width="formLabelWidth">
+                <el-input v-model="currUserName" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="角色" :label-width="formLabelWidth">
+                <el-select v-model="currUserRid" placeholder="">
+                    <el-option label="请选择" :value='-1'></el-option>
+                    <el-option :label="item.roleName" :value='item.id' v-for="(item,index) in roles" :key='index'></el-option>
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisibleRol = false">取 消</el-button>
+            <el-button type="primary" @click="rolEdit()">确 定</el-button>
+        </div>
     </el-dialog>
-    </el-card>
+</el-card>
 </template>
 
 <script>
@@ -139,11 +139,11 @@ export default {
                 email: '',
                 mobile: '',
             },
-            currUserName:'',
-            currUserId:'',
-            currUserRid:-1,
-            roles:[],
-            dialogFormVisibleRol:false
+            currUserName: '',
+            currUserId: '',
+            currUserRid: -1,
+            roles: [],
+            dialogFormVisibleRol: false
         }
     },
     // 加载用户列表
@@ -151,42 +151,48 @@ export default {
         this.getUserList();
     },
     methods: {
-        async rolEdit(){
+        async rolEdit() {
             // console.log(this.currUserRid);
-            const resa=await this.$http.put(`users/${this.currUserId}/role`,{rid:this.currUserRid})
+            const resa = await this.$http.put(`users/${this.currUserId}/role`, {
+                rid: this.currUserRid
+            })
             // console.log(resa)
-            const {data,meta:{msg,status}}=resa.data
-            if (status===200){
-                this.dialogFormVisibleRol=false
+            const {
+                data,
+                meta: {
+                    msg,
+                    status
+                }
+            } = resa.data
+            if (status === 200) {
+                this.dialogFormVisibleRol = false
                 this.$message.success(msg)
-            }else{
+            } else {
                 this.$message.error(msg)
             }
         },
-        async rolUser(row){
-            this.currUserName=row.username
-            this.currUserId=row.id
+        async rolUser(row) {
+            this.currUserName = row.username
+            this.currUserId = row.id
             // 点击的时候发起请求，获取【角色列表】
-            const res=await this.$http.get('roles')
-            this.roles=res.data.data
+            const res = await this.$http.get('roles')
+            this.roles = res.data.data
             // console.log(res);
             // 点击的时候发起请求，获取【当前角色id】；发请求，参数是当前用户id
-            const resd=await this.$http.get(`users/${row.id}`)
-            this.currUserRid=resd.data.data.rid
+            const resd = await this.$http.get(`users/${row.id}`)
+            this.currUserRid = resd.data.data.rid
             // console.log(resd)
             // 点击的时候弹出对话框
-            this.dialogFormVisibleRol=true
+            this.dialogFormVisibleRol = true
         },
         // 请求用户列表
         async getUserList() {
             // 注册令牌
-            const AUTH_TOKEN = localStorage.getItem('token')
-            this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
+            // const AUTH_TOKEN = localStorage.getItem('token')
+            // this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
             const res = await this.$http.get(`users?query=${this.query}&pagenum=${this.pagenum}&pagesize=${this.pagesize}`)
-            // console.log(res)
             const {
                 data: {
-                    pagenum,
                     total,
                     users
                 },
@@ -291,7 +297,7 @@ export default {
                 this.edit_form = {}
             }
         },
-        
+
     }
 }
 </script>
