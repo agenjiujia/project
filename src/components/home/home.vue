@@ -45,18 +45,18 @@ export default {
             menus:[]
         }
     },
-    beforeCreate() {
-        var token = localStorage.getItem('token')
-        if (!token) {
-            this.$router.push('/login')
-        }
-    },
+    // beforeCreate() {
+    //     var token = localStorage.getItem('token')
+    //     if (!token) {
+    //         this.$router.push('/login')
+    //     }
+    // },
     created() {
         this.getMenus()
     },
     methods: {
         clearitem() {
-            localStorage.clear();
+            sessionStorage.clear();
             this.$router.push('/login')
         },
         // 动态导航

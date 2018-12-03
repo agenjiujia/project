@@ -99,7 +99,10 @@
                 <el-input v-model="currUserName" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="角色" :label-width="formLabelWidth">
+
+                <!-- select的话应该选中哪个select的value值就是谁，由于是变动的所以我们使用表单元素的指令v-model -->
                 <el-select v-model="currUserRid" placeholder="">
+                    
                     <el-option label="请选择" :value='-1'></el-option>
                     <el-option :label="item.roleName" :value='item.id' v-for="(item,index) in roles" :key='index'></el-option>
                 </el-select>

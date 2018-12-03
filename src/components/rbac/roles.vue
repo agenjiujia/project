@@ -24,7 +24,7 @@
                                     <i class='el-icon-arrow-right'></i>
                                 </el-col>
                                 <el-col :span='20'>
-                                    <el-tag  @close='delRol(scope.row,item3.id)' closable type='warring' v-for='(item3,index3) in item2.children' :key='index3'>{{item3.authName}}</el-tag>
+                                    <el-tag @close='delRol(scope.row,item3.id)' closable type='warring' v-for='(item3,index3) in item2.children' :key='index3'>{{item3.authName}}</el-tag>
                                 </el-col>
                             </el-row>
                         </el-col>
@@ -54,15 +54,12 @@
     <!-- 当前角色拥有的权限 -->
     <!-- :default-checked-keys="arrcheck"  -->
     <el-dialog title="收货地址" :visible.sync="dialogFormVisibleRols">
-        <el-tree 
-        ref='tree'
+        <el-tree ref='tree' 
         :data="anyRolList" 
-        show-checkbox 
-        node-key="id" 
+        show-checkbox node-key="id" 
         default-expand-all 
         :default-checked-keys="arrcheck" 
-        :props="defaultProps"
-        >
+        :props="defaultProps">
         </el-tree>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisibleRols = false">取 消</el-button>
@@ -80,11 +77,11 @@ export default {
             // 每个角色各自拥有的权限总数组
             rolList: [],
             // 所有权限
-            anyRolList:[],
+            anyRolList: [],
             // 当前角色拥有的权限
-            arrcheck:'',
+            arrcheck: '',
             // 当前用户ID
-            currUserID:-1,
+            currUserID: -1,
             defaultProps: {
                 children: 'children',
                 label: 'authName'
@@ -105,22 +102,22 @@ export default {
             // console.log(res)
             this.rolList = res.data.data
         },
-         // 删除权限
-        async delRol(roluserID,rolID){
-            const res=await this.$http.delete(`roles/${roluserID.id}/rights/${rolID}`)
+        // 删除权限
+        async delRol(roluserID, rolID) {
+            const res = await this.$http.delete(`roles/${roluserID.id}/rights/${rolID}`)
             // console.log(res);
-            roluserID.children=res.data.data
+            roluserID.children = res.data.data
         },
 
         // tree
         async rolTree(row) {
-            this.currUserID=row.id
+            this.currUserID = row.id
             // 第一步 【获取所有权限】
             const res = await this.$http.get('rights/tree')
-            this.anyRolList=res.data.data
+            this.anyRolList = res.data.data
             // console.log(this.anyRolList)
             // 第二步 【获取当前角色拥有的权限】
-            var arr=[]
+            var arr = []
             // (当前角色的第一层权限)
             row.children.forEach(item => {
                 // (当前角色的第二层权限)
@@ -133,19 +130,26 @@ export default {
             });
             // console.log(arr)
             // 第三步 【当前拥有的即是选中的，把当前拥有的权限赋值给arrcheck】
-            this.arrcheck=arr
+            this.arrcheck = arr
             this.dialogFormVisibleRols = true
         },
         // subtree权限
-        async subTreeRol(){
-            let arr1=this.$refs.tree.getCheckedKeys()
-            let arr2=this.$refs.tree.getHalfCheckedKeys()
-            let arr8=[...arr1,...arr2]
+        async subTreeRol() {
+            let arr1 = this.$refs.tree.getCheckedKeys()
+            let arr2 = this.$refs.tree.getHalfCheckedKeys()
+            let arr8 = [...arr1, ...arr2]
             // console.log(arr8)
-            const res=await this.$http.post(`roles/${this.currUserID}/rights`,{rids:arr8.join(',')})
-            const {meta:{msg,status}}=res.data
-            if (status===200){
-                this.dialogFormVisibleRols=false
+            const res = await this.$http.post(`roles/${this.currUserID}/rights`, {
+                rids: arr8.join(',')
+            })
+            const {
+                meta: {
+                    msg,
+                    status
+                }
+            } = res.data
+            if (status === 200) {
+                this.dialogFormVisibleRols = false
                 this.roldata()
             }
         }
