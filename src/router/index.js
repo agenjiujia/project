@@ -14,6 +14,10 @@ import Params from '@/components/goods/goodsParams.vue'
 import Categories from '@/components/goods/categories.vue'
 // 添加商品
 import Addgoods from '@/components/goods/Addgoods.vue'
+// 订单管理
+import Orders from '@/components/orders/orders.vue'
+// 数据可视化
+import Reports from '@/components/reports/reports.vue'
 Vue.use(Router)
 
 const router = new Router({
@@ -53,6 +57,14 @@ const router = new Router({
       name:'addGoods',
       path:'/goodsAdd',
       component:Addgoods
+    },{
+      name:'orders',
+      path:'/orders',
+      component:Orders
+    },{
+      name:'reports',
+      path:'/reports',
+      component:Reports
     }]
   }
   ]
